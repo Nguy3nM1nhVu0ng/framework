@@ -9,35 +9,35 @@ use Kraken\Stream\AsyncStreamReader;
 
 class AsyncStreamReaderTest extends StreamSeekerTest
 {
-    public function testApiRead_ReadsDataProperly()
-    {
-        $loop = new Loop(new SelectLoop);
-        $stream = $this->createAsyncStreamReaderMock(null, $loop);
-        $resource = $stream->getResource();
-
-        $expectedData = "foobar\n";
-        $capturedData = null;
-        $capturedOrigin = null;
-
-        $stream->on('data', function($origin, $data) use(&$capturedOrigin, &$capturedData) {
-            $capturedOrigin = $origin;
-            $capturedData = $data;
-        });
-        $stream->on('end', $this->expectCallableOnce());
-
-        fwrite($resource, $expectedData);
-        rewind($resource);
-
-        $loop->addTimer(1e-1, function() use($loop) {
-            $loop->stop();
-        });
-        $loop->start();
-
-        $this->assertSame($expectedData, $capturedData);
-        $this->assertSame($stream, $capturedOrigin);
-
-        unset($loop);
-    }
+//    public function testApiRead_ReadsDataProperly()
+//    {
+//        $loop = new Loop(new SelectLoop);
+//        $stream = $this->createAsyncStreamReaderMock(null, $loop);
+//        $resource = $stream->getResource();
+//
+//        $expectedData = "foobar\n";
+//        $capturedData = null;
+//        $capturedOrigin = null;
+//
+//        $stream->on('data', function($origin, $data) use(&$capturedOrigin, &$capturedData) {
+//            $capturedOrigin = $origin;
+//            $capturedData = $data;
+//        });
+//        $stream->on('end', $this->expectCallableOnce());
+//
+//        fwrite($resource, $expectedData);
+//        rewind($resource);
+//
+//        $loop->addTimer(1e-1, function() use($loop) {
+//            $loop->stop();
+//        });
+//        $loop->start();
+//
+//        $this->assertSame($expectedData, $capturedData);
+//        $this->assertSame($stream, $capturedOrigin);
+//
+//        unset($loop);
+//    }
 
     /**
      * @param resource|null $resource
